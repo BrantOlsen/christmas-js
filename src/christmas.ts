@@ -16,7 +16,6 @@ class Snowflake {
     var startX = this.size / 2 - 1;
     var startY = 0;
 
-    // draw a rotated rect
     let degrees = 0;
     while (degrees <= 360) {
       degrees += 360 / this.points
@@ -24,7 +23,7 @@ class Snowflake {
     }
   }
 
-  drawRotatedRect(ctx, x, y, width, height, degrees) {
+  private drawRotatedRect(ctx, x, y, width, height, degrees) {
     ctx.save();
 
     ctx.beginPath();
