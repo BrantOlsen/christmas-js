@@ -1,40 +1,48 @@
 class Snowflake {
   x: number = 0;
   y: number = 0;
-  width: number = 20;
-  height: number = 20;
-  points: number = 2;
+  size: number = 25;
+  points: number = 5;
   private _canvas: HTMLCanvasElement;
 
   constructor() {
     this._canvas = document.createElement("canvas");
     document.body.appendChild(this._canvas);
-    this._canvas.setAttribute('width', '100px');
-    this._canvas.setAttribute('height', '100px');
-    this._canvas.setAttribute('style', 'background-color: black; width: 100px; height: 100px; position: fixed; top: 0; left: 0;');
+    this._canvas.setAttribute('width', this.size + 'px');
+    this._canvas.setAttribute('height', this.size + 'px');
+    this._canvas.setAttribute('style', `background-color: black; width: ${this.size}px; height: ${this.size}px; position: fixed; top: 0; left: 0;`);
     let ctx = this._canvas.getContext('2d');
+
+    var startX = this.size / 2 - 1;
+    var startY = 0;
+
+    // draw a rotated rect
     let degrees = 0;
     while (degrees <= 360) {
-      degrees += 360 / this.points;
-      // first save the untranslated/unrotated context
-      ctx.save();
-      ctx.beginPath();
-      // move the rotation point to the center of the rect
-      ctx.translate(this.width / 2, this.height / 2);
-      // rotate the rect
-      ctx.rotate(degrees * Math.PI / 180);
-
-      // draw the rect on the transformed context
-      // Note: after transforming [0,0] is visually [x,y]
-      //       so the rect needs to be offset accordingly when drawn
-      ctx.rect(-this.width / 2, -this.height / 2, this.width, this.height);
-
-      ctx.fillStyle = "white";
-      ctx.fill();
-
-      // restore the context to its untranslated/unrotated state
-      ctx.restore();
+      degrees += 360 / this.points
+      this.drawRotatedRect(ctx, startX, startY, 2, this.size, degrees);
     }
+  }
+
+  drawRotatedRect(ctx, x, y, width, height, degrees) {
+    ctx.save();
+
+    ctx.beginPath();
+    // move the rotation point to the center of the rect
+    ctx.translate(x + width / 2, y + height / 2);
+    // rotate the rect
+    ctx.rotate(degrees * Math.PI / 180);
+
+    // draw the rect on the transformed context
+    // Note: after transforming [0,0] is visually [x,y]
+    //       so the rect needs to be offset accordingly when drawn
+    ctx.rect(-width / 2, -height / 2, width, height);
+
+    ctx.fillStyle = "white";
+    ctx.fill();
+
+    // restore the context to its untranslated/unrotated state
+    ctx.restore();
   }
 
   draw(): void {
