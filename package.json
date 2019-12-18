@@ -18,6 +18,6 @@
   },
   "homepage": "https://github.com/BrantOlsen/christmas-js#readme",
   "dependencies": {
-    "tsc": "^1.20150623.0"
+    "typescript": "^3.7.3"
   }
 }
