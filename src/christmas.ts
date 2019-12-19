@@ -1,16 +1,18 @@
 class Snowflake {
-  x: number = 0;
-  y: number = 0;
+  posTop: number = 0;
+  posLeft: number = 0;
   size: number = 25;
   points: number = 5;
   private _canvas: HTMLCanvasElement;
 
-  constructor() {
+  constructor(posTop: number, posLeft: number) {
+    this.posTop = posTop;
+    this.posLeft = posLeft;
     this._canvas = document.createElement("canvas");
     document.body.appendChild(this._canvas);
     this._canvas.setAttribute('width', this.size + 'px');
     this._canvas.setAttribute('height', this.size + 'px');
-    this._canvas.setAttribute('style', `background-color: black; width: ${this.size}px; height: ${this.size}px; position: fixed; top: 0; left: 0;`);
+    this._canvas.setAttribute('style', `background-color: black; width: ${this.size}px; height: ${this.size}px; position: fixed; top: ${this.posTop}px; left: ${this.posLeft}px;`);
     let ctx = this._canvas.getContext('2d');
 
     var startX = this.size / 2 - 1;
@@ -45,21 +47,45 @@ class Snowflake {
   }
 
   draw(): void {
-    this.x += 10;
-    this.y += 10;
-    if (this.x > window.innerWidth) {
-      this.x = 0;
+    this.posTop += 10;
+    this.posLeft += 10;
+    if (this.posLeft > window.innerWidth) {
+      this.posLeft = 0;
     }
-    if (this.y > window.innerHeight) {
-      this.y = 0;
+    if (this.posTop > window.innerHeight) {
+      this.posTop = 0;
     }
-    
-    this._canvas.style.left = this.x + "px";
-    this._canvas.style.top = this.y + "px";
+    this._canvas.style.left = this.posLeft + "px";
+    this._canvas.style.top = this.posTop + "px";
   }
 }
 
-let t = new Snowflake();
-setInterval(() => {
-  t.draw();
-}, 500);
+class Storm {
+  snowflakes: Snowflake[] = [];
+  flakesAtATime: number = 10;
+  createSnowInterval: number;
+
+  constructor() {
+    this.createSnowInterval = setInterval(() => {
+      let distanceBetweenFlakes = window.innerWidth / this.flakesAtATime;
+      let i = distanceBetweenFlakes;
+      while (i < window.innerWidth) {
+        this.snowflakes.push(new Snowflake(0, i));
+        i += distanceBetweenFlakes;
+      }
+
+      // Stop after creating enough snow for the whole window.
+      if (this.snowflakes.length > ((this.flakesAtATime + 1) * (window.innerHeight / this.snowflakes[0].size))) {
+        clearInterval(this.createSnowInterval);
+      }
+    }, 1000);
+
+    setInterval(() => {
+      this.snowflakes.forEach(flake => {
+        flake.draw();
+      });
+    }, 500);
+  }
+}
+
+let t = new Storm();
