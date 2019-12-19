@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "system",
     "sourceMap": true,
-    "outDir": "dist"
+    "outFile": "dist/christmas.js"
   },
   "include": ["src"],
   "exclude": ["node_modules"]
