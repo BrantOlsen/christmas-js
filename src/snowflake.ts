@@ -43,7 +43,7 @@ class Snowflake {
     // draw the rect on the transformed context
     // Note: after transforming [0,0] is visually [x,y]
     //       so the rect needs to be offset accordingly when drawn
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "#d3d3d3";
     ctx.strokeRect(-width / 2, -height / 2, width, height);
     
     ctx.rect(-width / 2, -height / 2, width, height);

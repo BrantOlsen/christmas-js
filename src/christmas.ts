@@ -1,4 +1,5 @@
 /// <reference path="./snowflake.ts" />
+/// <reference path="./light.ts" />
 
 class Storm {
   snowflakes: Snowflake[] = [];
@@ -44,3 +45,5 @@ class Storm {
 
 let t = new Storm();
 t.startSnow();
+
+var l = new Light();
