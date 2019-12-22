@@ -1,50 +1,65 @@
+class LightPoint {
+  x: number;
+  y: number;
+}
+
 class Light {
   height: number = 25;
   width: number = 10;
-  posTop: number = 100;
-  posLeft: number = 100;
-  private _canvas: HTMLCanvasElement;
+  center: LightPoint;
+  private _context: CanvasRenderingContext2D;
+  private _debug: boolean;
 
-  constructor() {
-    this._canvas = document.createElement("canvas");
-    document.body.appendChild(this._canvas);
-    this._canvas.setAttribute('width', this.height + 'px');
-    this._canvas.setAttribute('height', this.height + 'px');
-    this._canvas.setAttribute('style', `width: ${this.height}px; height: ${this.height}px; position: fixed; top: ${this.posTop}px; left: ${this.posLeft}px;`);
-    this.drawLight(this._canvas.getContext('2d')); 
+  constructor(ctx: CanvasRenderingContext2D, center: LightPoint, debug: boolean = false) {
+    this._context = ctx;
+    this.center = center;
+    this._debug = debug;
+    this.drawLight(); 
   }
 
-  private drawLight(ctx: CanvasRenderingContext2D) {
-    let endpoint = {x: this.height / 2, y: 0};
+  private drawLight() {
+    let endpoint = {x: this.center.x, y: 0};
     let region = new Path2D();
-    let offsetFromSides = (this.height - this.width) / 2;
 
     // Right Side
-    let rstart = {x: this.height - offsetFromSides, y: this.height};
-    let rcp1 = {x: this.height - 5, y: this.height / 3};
-    let rcp2 = {x: this.height, y: this.height / 2};
+    let rstart = {x: this.center.x + (this.width / 2), y: this.height};
+    let rcp1 = {x: this.center.x + this.width - 5, y: this.height / 3};
+    let rcp2 = {x: this.center.x + this.width, y: this.height / 2};
+    if (this._debug) {
+    }
     region.moveTo(rstart.x, rstart.y);
     region.bezierCurveTo(rcp1.x, rcp1.y, rcp2.x, rcp2.y, endpoint.x, endpoint.y);
 
     // Left Side
-    let lstart = {x: offsetFromSides, y: this.height};
-    let lcp1 = {x: 5, y: rcp2.y};
-    let lcp2 = {x: 0, y: rcp1.y};
+    let lstart = {x: this.center.x - this.width, y: this.height};
+    let lcp1 = {x: this.center.x - this.width - 5, y: rcp2.y};
+    let lcp2 = {x: this.center.x - this.width, y: rcp1.y};
+    
     region.bezierCurveTo(lcp2.x, lcp2.y, lcp1.x, lcp1.y, lstart.x, lstart.y);
 
     // Bottom Line
     region.lineTo(rstart.x, rstart.y);
     region.closePath();
 
-    ctx.fillStyle = 'green';
-    ctx.fill(region);
+    this._context.fillStyle = 'green';
+    this._context.fill(region);
+
+    if (this._debug) {
+      this.drawControlPoint(lstart, 'yellow');
+      this.drawControlPoint(lcp1, 'orange');
+      this.drawControlPoint(lcp2, 'orange');
+      this.drawControlPoint(rstart, 'blue');
+      this.drawControlPoint(rcp1, 'red');
+      this.drawControlPoint(rcp2, 'red');
+    }
   }
 
-  private drawControlPoint(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  private drawControlPoint(point: LightPoint, color: string = 'blue') {
     // Start and end points
-    ctx.fillStyle = 'blue';
-    ctx.beginPath();
-    ctx.arc(x, y, 2, 0, 2 * Math.PI);
-    ctx.fill();
+    this._context.fillStyle = color;
+    this._context.beginPath();
+    this._context.arc(point.x, point.y, 3, 0, 2 * Math.PI);
+    this._context.fill();
+    console.log(`Point: ${point.x}, ${point.y}`);
   }
 }
