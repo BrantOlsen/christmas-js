@@ -1,12 +1,5 @@
 /// <reference path="./light.ts" />
 
-enum LightLocation {
-  Top,
-  Left,
-  Right,
-  Bottom
-}
-
 class LightString {
   distanceBetweenLights: number = 100;
   lights: Light[];
@@ -26,13 +19,19 @@ class LightString {
     let height = isHorizontal ? '50px' : `${window.innerHeight}px`;
     this._canvas.setAttribute('width',  width);
     this._canvas.setAttribute('height', height);
-    this._canvas.setAttribute('style', `width: ${width}; height: ${height}; position: fixed; bottom: ${this.posBottom}px; left: ${this.posLeft}px;`);
+    let topBottom = location == LightLocation.Bottom ? 'bottom' : 'top';
+    this._canvas.setAttribute('style', `width: ${width}; height: ${height}; position: fixed; ${topBottom}: ${this.posBottom}px; left: ${this.posLeft}px;`);
 
     this.lights = [];
 
     let lightPos = this.distanceBetweenLights;
     while (lightPos < window.innerWidth - this.distanceBetweenLights) {
-      this.lights.push(new Light(this._canvas.getContext('2d'), {x: lightPos, y: this._canvas.height}, this.colors[this.lights.length % 3]));
+      this.lights.push(new Light(
+        this._canvas.getContext('2d'),
+        {x: lightPos, y: this._canvas.height},
+        this.colors[this.lights.length % 3],
+        location
+      ));
       lightPos += this.distanceBetweenLights;
     } 
     window.setInterval(() => {

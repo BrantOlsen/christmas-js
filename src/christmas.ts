@@ -4,4 +4,7 @@
 let t = new SnowStorm();
 t.startSnow();
 
-var l = new LightString(LightLocation.Bottom);
+var lights = [
+  new LightString(LightLocation.Bottom),
+  new LightString(LightLocation.Top)
+];
