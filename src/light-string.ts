@@ -15,24 +15,31 @@ class LightString {
     this._canvas = document.createElement("canvas");
     document.body.appendChild(this._canvas);
     let isHorizontal = location == LightLocation.Bottom || location == LightLocation.Top;
-    let width = isHorizontal ? `${window.innerWidth}px` : '25px';
+    let width = isHorizontal ? `${window.innerWidth}px` : '50px';
     let height = isHorizontal ? '50px' : `${window.innerHeight}px`;
     this._canvas.setAttribute('width',  width);
     this._canvas.setAttribute('height', height);
     let topBottom = location == LightLocation.Bottom ? 'bottom' : 'top';
-    this._canvas.setAttribute('style', `width: ${width}; height: ${height}; position: fixed; ${topBottom}: ${this.posBottom}px; left: ${this.posLeft}px;`);
+    let rightLeft = location == LightLocation.Right ? 'right' : 'left';
+    this._canvas.setAttribute('style', `width: ${width}; height: ${height}; position: fixed; ${topBottom}: ${this.posBottom}px; ${rightLeft}: ${this.posLeft}px;`);
 
     this.lights = [];
 
-    let lightPos = this.distanceBetweenLights;
-    while (lightPos < window.innerWidth - this.distanceBetweenLights) {
+    let lightPosOffset = this.distanceBetweenLights;
+    while (lightPosOffset < window.innerWidth - this.distanceBetweenLights) {
+      let lightPoint = {
+        x: location == LightLocation.Bottom || location == LightLocation.Top ? lightPosOffset : 
+          location == LightLocation.Left ? 0 : this._canvas.width,
+        y: location == LightLocation.Bottom || location == LightLocation.Top ? this._canvas.height :
+          lightPosOffset
+      };
       this.lights.push(new Light(
         this._canvas.getContext('2d'),
-        {x: lightPos, y: this._canvas.height},
+        lightPoint,
         this.colors[this.lights.length % 3],
         location
       ));
-      lightPos += this.distanceBetweenLights;
+      lightPosOffset += this.distanceBetweenLights;
     } 
     window.setInterval(() => {
       this.drawLights();

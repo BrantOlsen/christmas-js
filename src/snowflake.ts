@@ -47,6 +47,8 @@ class Snowflake {
     ctx.strokeRect(-width / 2, -height / 2, width, height);
     
     ctx.rect(-width / 2, -height / 2, width, height);
+    ctx.shadowBlur = 5;
+    ctx.shadowColor = 'white';
     ctx.fillStyle = "white";
     ctx.fill();
 
