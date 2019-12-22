@@ -48,7 +48,7 @@ class Light {
     region.closePath();
 
     if (this.drawStyle == LightDrawStyle.Fill) {
-      this._context.shadowBlur = 10;
+      this._context.shadowBlur = 20;
       this._context.shadowColor = this.color;
       this._context.fillStyle = this.color;
       this._context.fill(region);
