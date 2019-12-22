@@ -6,13 +6,15 @@ class LightPoint {
 class Light {
   height: number = 25;
   width: number = 10;
+  color: string;
   center: LightPoint;
   private _context: CanvasRenderingContext2D;
   private _debug: boolean;
 
-  constructor(ctx: CanvasRenderingContext2D, center: LightPoint, debug: boolean = false) {
-    this._context = ctx;
+  constructor(ctx: CanvasRenderingContext2D, center: LightPoint, color: string, debug: boolean = false) {
+    this.color = color;
     this.center = center;
+    this._context = ctx;
     this._debug = debug;
     this.drawLight(); 
   }
@@ -25,8 +27,6 @@ class Light {
     let rstart = {x: this.center.x + (this.width / 2), y: this.height};
     let rcp1 = {x: this.center.x + this.width - 5, y: this.height / 3};
     let rcp2 = {x: this.center.x + this.width, y: this.height / 2};
-    if (this._debug) {
-    }
     region.moveTo(rstart.x, rstart.y);
     region.bezierCurveTo(rcp1.x, rcp1.y, rcp2.x, rcp2.y, endpoint.x, endpoint.y);
 
@@ -41,7 +41,7 @@ class Light {
     region.lineTo(rstart.x, rstart.y);
     region.closePath();
 
-    this._context.fillStyle = 'green';
+    this._context.fillStyle = this.color;
     this._context.fill(region);
 
     if (this._debug) {

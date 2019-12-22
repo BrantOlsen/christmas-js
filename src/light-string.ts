@@ -8,11 +8,13 @@ enum LightLocation {
 }
 
 class LightString {
+  distanceBetweenLights: number = 100;
   lights: Light[];
   posTop: number = 0;
   posLeft: number = 0;
   posBottom: number = 0;
   posRight: number;
+  colors: string[] = ['green', 'red', 'blue'];
   private _canvas: HTMLCanvasElement;
 
   constructor(location: LightLocation) {
@@ -26,8 +28,11 @@ class LightString {
     this._canvas.setAttribute('style', `width: ${width}; height: ${height}; position: fixed; bottom: ${this.posBottom}px; left: ${this.posLeft}px;`);
 
     this.lights = [];
-    this.lights.push(new Light(this._canvas.getContext('2d'), {x: 100, y: 0}, true));
-    this.lights.push(new Light(this._canvas.getContext('2d'), {x: 200, y: 10}));
-    this.lights.push(new Light(this._canvas.getContext('2d'), {x: 300, y: 10}));
+
+    let lightPos = this.distanceBetweenLights;
+    while (lightPos < window.innerWidth - this.distanceBetweenLights) {
+      this.lights.push(new Light(this._canvas.getContext('2d'), {x: lightPos, y: 0}, this.colors[this.lights.length % 3]));
+      lightPos += this.distanceBetweenLights;
+    }
   }
 }
