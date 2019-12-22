@@ -3,11 +3,17 @@ class LightPoint {
   y: number;
 }
 
+enum LightDrawStyle {
+  Stroke,
+  Fill
+} 
+
 class Light {
   height: number = 25;
   width: number = 10;
   color: string;
   center: LightPoint;
+  drawStyle: LightDrawStyle = LightDrawStyle.Fill;
   private _context: CanvasRenderingContext2D;
   private _debug: boolean;
 
@@ -19,7 +25,7 @@ class Light {
     this.drawLight(); 
   }
 
-  private drawLight() {
+  drawLight() {
     let endpoint = {x: this.center.x, y: 0};
     let region = new Path2D();
 
@@ -41,8 +47,16 @@ class Light {
     region.lineTo(rstart.x, rstart.y);
     region.closePath();
 
-    this._context.fillStyle = this.color;
-    this._context.fill(region);
+    if (this.drawStyle == LightDrawStyle.Fill) {
+      this._context.shadowBlur = 10;
+      this._context.shadowColor = this.color;
+      this._context.fillStyle = this.color;
+      this._context.fill(region);
+    }
+    else {
+      this._context.strokeStyle = this.color;
+      this._context.stroke(region);
+    }
 
     if (this._debug) {
       this.drawControlPoint(lstart, 'yellow');
