@@ -26,18 +26,18 @@ class Light {
   }
 
   drawLight() {
-    let endpoint = {x: this.center.x, y: 0};
+    let endpoint = {x: this.center.x, y: this.center.y - this.height};
     let region = new Path2D();
 
     // Right Side
-    let rstart = {x: this.center.x + (this.width / 2), y: this.height};
-    let rcp1 = {x: this.center.x + this.width - 5, y: this.height / 3};
-    let rcp2 = {x: this.center.x + this.width, y: this.height / 2};
+    let rstart = {x: this.center.x + (this.width / 2), y: this.center.y};
+    let rcp1 = {x: this.center.x + this.width - 5, y: rstart.y - this.height / 3};
+    let rcp2 = {x: this.center.x + this.width, y: rstart.y - this.height / 2};
     region.moveTo(rstart.x, rstart.y);
     region.bezierCurveTo(rcp1.x, rcp1.y, rcp2.x, rcp2.y, endpoint.x, endpoint.y);
 
     // Left Side
-    let lstart = {x: this.center.x - this.width, y: this.height};
+    let lstart = {x: this.center.x - this.width, y: this.center.y};
     let lcp1 = {x: this.center.x - this.width - 5, y: rcp2.y};
     let lcp2 = {x: this.center.x - this.width, y: rcp1.y};
     

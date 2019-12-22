@@ -32,7 +32,7 @@ class LightString {
 
     let lightPos = this.distanceBetweenLights;
     while (lightPos < window.innerWidth - this.distanceBetweenLights) {
-      this.lights.push(new Light(this._canvas.getContext('2d'), {x: lightPos, y: 50 / 2}, this.colors[this.lights.length % 3]));
+      this.lights.push(new Light(this._canvas.getContext('2d'), {x: lightPos, y: this._canvas.height}, this.colors[this.lights.length % 3]));
       lightPos += this.distanceBetweenLights;
     } 
     window.setInterval(() => {
