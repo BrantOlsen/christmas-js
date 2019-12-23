@@ -13,6 +13,10 @@ class SnowStorm {
 
   constructor() {
     setInterval(() => {
+      if (document.hidden) {
+        return;
+      }
+
       this.snowflakes.forEach(flake => {
         flake.speed = this.flakeSpeed;
         flake.drift = this.flakeDrift;
@@ -23,6 +27,10 @@ class SnowStorm {
 
   startSnow() {
     this.createSnowInterval = setInterval(() => {
+      if (document.hidden) {
+        return;
+      }
+
       let distanceBetweenFlakes = window.innerWidth / this.flakesAtATime;
       let i = distanceBetweenFlakes;
       while (i < window.innerWidth) {

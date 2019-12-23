@@ -42,7 +42,9 @@ class LightString {
       lightPosOffset += this.distanceBetweenLights;
     } 
     window.setInterval(() => {
-      this.drawLights();
+      if (!document.hidden) {
+        this.drawLights();
+      }
     }, 1000);
   }
 
