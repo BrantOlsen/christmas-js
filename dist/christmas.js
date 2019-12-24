@@ -338,13 +338,5 @@ var Tree = /** @class */ (function () {
 /// <reference path="./snow-storm.ts" />
 /// <reference path="./light-string.ts" />
 /// <reference path="./tree.ts" />
-var t = new SnowStorm();
-t.startSnow();
-var lights = [
-    new LightString(LightLocation.Bottom),
-    new LightString(LightLocation.Top),
-    new LightString(LightLocation.Right),
-    new LightString(LightLocation.Left)
-];
 var tree = new Tree();
 //# sourceMappingURL=christmas.js.map
