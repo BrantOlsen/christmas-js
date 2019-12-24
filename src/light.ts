@@ -36,24 +36,34 @@ class Light {
 
   drawLight() {
     let endpoint = {
-      x: this.center.x,
+      x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x :
+         this.drawDirection == LightLocation.Right ? this.center.x - this.height :
+         this.height,
       y: this.drawDirection == LightLocation.Top ? this.height :
-        this.center.y - this.height
+         this.drawDirection == LightLocation.Bottom ? this.center.y - this.height :
+         this.center.y
     };
     let region = new Path2D();
 
     // Right Side
     let rstart = {
-      x: this.center.x + (this.width / 2),
-      y: this.drawDirection == LightLocation.Top ? 0 : this.center.y
+      x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x + (this.width / 2) :
+         this.drawDirection == LightLocation.Right ? this.center.x :
+         0,
+      y: this.drawDirection == LightLocation.Top ? 0 :
+         this.drawDirection == LightLocation.Bottom ? this.center.y :
+         this.center.y - (this.width / 2)
     };
     let rcp1 = {
-      x: this.center.x + this.width - 5,
+      x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x + this.width - 5 :
+         this.drawDirection == LightLocation.Right ? endpoint.x + this.height / 3 :
+          endpoint.x - this.height / 3,
       y: this.drawDirection == LightLocation.Top ? rstart.y + this.height / 3 :
         rstart.y - this.height / 3
     };
     let rcp2 = {
-      x: this.center.x + this.width,
+      x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x + this.width :
+         rcp1.x,
       y: rcp1.y
     };
     region.moveTo(rstart.x, rstart.y);
@@ -61,11 +71,25 @@ class Light {
 
     // Left Side
     let lstart = {
-      x: this.center.x - this.width,
-      y: this.drawDirection == LightLocation.Top ? 0 : this.center.y
+      x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x - (this.width / 2) :
+         this.drawDirection == LightLocation.Right ? this.center.x :
+          0,
+      y: this.drawDirection == LightLocation.Top ? 0 :
+         this.drawDirection == LightLocation.Bottom ? this.center.y :
+          this.center.y + (this.width / 2)
     };
-    let lcp1 = {x: this.center.x - this.width - 5, y: rcp2.y};
-    let lcp2 = {x: this.center.x - this.width, y: rcp1.y};
+    let lcp1 = {
+      x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? lstart.x - 5 :
+        rcp1.x,
+      y: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? rcp2.y :
+        lstart.y + 5
+    };
+    let lcp2 = {
+      x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? lstart.x - 10 :
+        rcp2.x,
+      y: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? rcp1.y :
+        lstart.y + 5
+    };
     
     region.bezierCurveTo(lcp2.x, lcp2.y, lcp1.x, lcp1.y, lstart.x, lstart.y);
 

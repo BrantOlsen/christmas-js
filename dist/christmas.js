@@ -22,7 +22,7 @@ var Snowflake = /** @class */ (function () {
         var degrees = 0;
         while (degrees <= 360) {
             degrees += 360 / this.points;
-            this.drawRotatedRect(ctx, startX, startY, 2, this.size, degrees);
+            this.drawRotatedRect(ctx, startX, startY, 1, this.size, degrees);
         }
     }
     Snowflake.prototype.drawRotatedRect = function (ctx, x, y, width, height, degrees) {
@@ -138,34 +138,58 @@ var Light = /** @class */ (function () {
     }
     Light.prototype.drawLight = function () {
         var endpoint = {
-            x: this.center.x,
+            x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x :
+                this.drawDirection == LightLocation.Right ? this.center.x - this.height :
+                    this.height,
             y: this.drawDirection == LightLocation.Top ? this.height :
-                this.center.y - this.height
+                this.drawDirection == LightLocation.Bottom ? this.center.y - this.height :
+                    this.center.y
         };
         var region = new Path2D();
         // Right Side
         var rstart = {
-            x: this.center.x + (this.width / 2),
-            y: this.drawDirection == LightLocation.Top ? 0 : this.center.y
+            x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x + (this.width / 2) :
+                this.drawDirection == LightLocation.Right ? this.center.x :
+                    0,
+            y: this.drawDirection == LightLocation.Top ? 0 :
+                this.drawDirection == LightLocation.Bottom ? this.center.y :
+                    this.center.y - (this.width / 2)
         };
         var rcp1 = {
-            x: this.center.x + this.width - 5,
+            x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x + this.width - 5 :
+                this.drawDirection == LightLocation.Right ? endpoint.x + this.height / 3 :
+                    endpoint.x - this.height / 3,
             y: this.drawDirection == LightLocation.Top ? rstart.y + this.height / 3 :
                 rstart.y - this.height / 3
         };
         var rcp2 = {
-            x: this.center.x + this.width,
+            x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x + this.width :
+                rcp1.x,
             y: rcp1.y
         };
         region.moveTo(rstart.x, rstart.y);
         region.bezierCurveTo(rcp1.x, rcp1.y, rcp2.x, rcp2.y, endpoint.x, endpoint.y);
         // Left Side
         var lstart = {
-            x: this.center.x - this.width,
-            y: this.drawDirection == LightLocation.Top ? 0 : this.center.y
+            x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? this.center.x - (this.width / 2) :
+                this.drawDirection == LightLocation.Right ? this.center.x :
+                    0,
+            y: this.drawDirection == LightLocation.Top ? 0 :
+                this.drawDirection == LightLocation.Bottom ? this.center.y :
+                    this.center.y + (this.width / 2)
         };
-        var lcp1 = { x: this.center.x - this.width - 5, y: rcp2.y };
-        var lcp2 = { x: this.center.x - this.width, y: rcp1.y };
+        var lcp1 = {
+            x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? lstart.x - 5 :
+                rcp1.x,
+            y: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? rcp2.y :
+                lstart.y + 5
+        };
+        var lcp2 = {
+            x: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? lstart.x - 10 :
+                rcp2.x,
+            y: this.drawDirection == LightLocation.Top || this.drawDirection == LightLocation.Bottom ? rcp1.y :
+                lstart.y + 5
+        };
         region.bezierCurveTo(lcp2.x, lcp2.y, lcp1.x, lcp1.y, lstart.x, lstart.y);
         // Bottom Line
         region.lineTo(rstart.x, rstart.y);
@@ -225,7 +249,7 @@ var LightString = /** @class */ (function () {
         while (lightPosOffset < window.innerWidth - this.distanceBetweenLights) {
             var lightPoint = {
                 x: location == LightLocation.Bottom || location == LightLocation.Top ? lightPosOffset :
-                    location == LightLocation.Left ? 0 : this._canvas.width,
+                    this._canvas.width,
                 y: location == LightLocation.Bottom || location == LightLocation.Top ? this._canvas.height :
                     lightPosOffset
             };

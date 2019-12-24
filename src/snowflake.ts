@@ -27,7 +27,7 @@ class Snowflake {
     let degrees = 0;
     while (degrees <= 360) {
       degrees += 360 / this.points
-      this.drawRotatedRect(ctx, startX, startY, 2, this.size, degrees);
+      this.drawRotatedRect(ctx, startX, startY, 1, this.size, degrees);
     }
   }
 
