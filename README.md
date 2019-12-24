@@ -16,3 +16,12 @@ Add snow and Christmas lights to your webpage.
   ];
 </script>
 ```
+
+# TODO
+- Add wires between the lights of a light string and match up with the other LightStrings.
+- Fix tree drawing.
+- Add ornaments to the tree.
+- Draw snow with lines instead of rectangles to allow for little perpendicular lines on the end of the big lines.
+- Snow should drift more slowly.
+- Add snowmen.
+- Add presents.
