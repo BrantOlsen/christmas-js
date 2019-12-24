@@ -1,4 +1,26 @@
 <html>
+  <head>
+    <style>
+      a.button {
+        position: absolute; 
+        top: 50%;
+        left: 48%;
+        margin: 0 auto;
+        display: block;
+        text-decoration: none;
+      }
+
+      a.button div {
+        padding: 20px; 
+        background-color: black; 
+        color: white;
+        border-radius: 5px;
+        -webkit-box-shadow: 5px 5px 15px 0px rgba(0,0,0,0.75);
+        -moz-box-shadow: 5px 5px 15px 0px rgba(0,0,0,0.75);
+        box-shadow: 5px 5px 15px 0px rgba(0,0,0,0.75);
+      }
+    </style>
+  </head>
   <body>
     <script src="dist/christmas.js"></script>
     <script>
@@ -13,6 +35,12 @@
       ];
 
       var tree = new Tree();
-  </script>
+    </script>
+
+    <a href="https://github.com/BrantOlsen/christmas-js" class="button">
+      <div>
+        View Project on Github
+      </div>
+    </a>
   </body>
 </html>
