@@ -1,6 +1,8 @@
 class Tree {
-  height: number = 300;
-  width: number = 50;
+  branchHeight: number = 300;
+  branchWidth: number = 200;
+  baseWidth: number = 50;
+  baseHeight: number = 50;
   posTop: number = 250;
   posLeft: number = 250;
   private _canvas: HTMLCanvasElement;
@@ -8,28 +10,46 @@ class Tree {
   constructor() {
     this._canvas = document.createElement("canvas");
     document.body.appendChild(this._canvas);
-    this._canvas.setAttribute('width', this.height + 'px');
-    this._canvas.setAttribute('height', this.height + 'px');
-    this._canvas.setAttribute('style', `width: ${this.height}px; height: ${this.height}px; position: fixed; top: ${this.posTop}px; left: ${this.posLeft}px;`);
+    this._canvas.setAttribute('width', this.branchWidth + 'px');
+    this._canvas.setAttribute('height', (this.baseHeight + this.branchHeight) + 'px');
+    this._canvas.setAttribute('style', `width: ${this.branchWidth}px; height: ${(this.baseHeight + this.branchHeight)}px; position: fixed; top: ${this.posTop}px; left: ${this.posLeft}px;`);
     let ctx = this._canvas.getContext('2d');
 
     // Base
-    let baseHeight = this.width;
     ctx.fillStyle = "brown";
-    ctx.fillRect(this.height/2 - this.width/2, this.height - this.width, this.width, this.width);
+    ctx.fillRect(this.branchWidth/2 - this.baseWidth/2, this.branchHeight, this.baseWidth, this.baseHeight);
 
     // Green Tree Part
     let greenPart = new Path2D();
-    greenPart.moveTo(0, this.height - baseHeight);
-    greenPart.lineTo(this.height, this.height - baseHeight);
-    greenPart.lineTo(this.height / 2, 0);
-    greenPart.lineTo(0, this.height - baseHeight);
+    greenPart.moveTo(0, this.branchHeight);
+    greenPart.lineTo(this.branchWidth, this.branchHeight);
+    let branchCount = 6;
+    let branchY = this.branchHeight;
+    let branchX = this.branchWidth;
+    for (let i = 0; i < branchCount; ++i) {
+      branchY -= this.branchHeight / branchCount;
+      branchX -= branchX * .20;
+      greenPart.lineTo(branchX, branchY);
+      branchX += (branchX - (this.branchWidth / 2)) * .50;
+      greenPart.lineTo(branchX, branchY);
+    }
+    greenPart.lineTo(this.branchWidth / 2, 0);
+    branchY = 0;
+    branchX = this.branchWidth / 2;
+    for (let i = 0; i < branchCount; ++i) {
+      branchY += this.branchHeight / branchCount;
+      branchX -= branchX * .20;
+      greenPart.lineTo(branchX, branchY);
+      branchX -= (branchX - (this.branchWidth / 2)) * .50;
+      greenPart.lineTo(branchX, branchY);
+    }
+    greenPart.lineTo(0, this.branchHeight);
     ctx.fillStyle = 'green';
     ctx.fill(greenPart);
 
     //Ornament
     
-    ctx.beginPath();
+    /*ctx.beginPath();
     let orgnamizeHeight = 15;
     ctx.arc(this.width, this.height - this.width - orgnamizeHeight, 3, 0, 2 * Math.PI);
     ctx.fillStyle = 'blue';
@@ -42,7 +62,7 @@ class Tree {
     ctx.arc(this.width, this.height - this.width - orgnamizeHeight*3, 3, 0, 2 * Math.PI);
     ctx.fillStyle = 'yellow';
     ctx.fill();
-    ctx.closePath();
+    ctx.closePath();*/
 
   }
 }
