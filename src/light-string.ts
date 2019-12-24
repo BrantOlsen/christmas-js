@@ -26,7 +26,9 @@ class LightString {
     this.lights = [];
 
     let lightPosOffset = this.distanceBetweenLights;
-    while (lightPosOffset < window.innerWidth - this.distanceBetweenLights) {
+    let cutoff = location == LightLocation.Bottom || location == LightLocation.Top ? window.innerWidth - this.distanceBetweenLights :
+      window.innerHeight - this.distanceBetweenLights;
+    while (lightPosOffset < cutoff) {
       let lightPoint = {
         x: location == LightLocation.Bottom || location == LightLocation.Top ? lightPosOffset : 
           this._canvas.width,

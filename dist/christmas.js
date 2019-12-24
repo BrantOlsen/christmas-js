@@ -246,7 +246,9 @@ var LightString = /** @class */ (function () {
         this._canvas.setAttribute('style', "width: " + width + "; height: " + height + "; position: fixed; " + topBottom + ": " + this.posBottom + "px; " + rightLeft + ": " + this.posLeft + "px;");
         this.lights = [];
         var lightPosOffset = this.distanceBetweenLights;
-        while (lightPosOffset < window.innerWidth - this.distanceBetweenLights) {
+        var cutoff = location == LightLocation.Bottom || location == LightLocation.Top ? window.innerWidth - this.distanceBetweenLights :
+            window.innerHeight - this.distanceBetweenLights;
+        while (lightPosOffset < cutoff) {
             var lightPoint = {
                 x: location == LightLocation.Bottom || location == LightLocation.Top ? lightPosOffset :
                     this._canvas.width,
@@ -338,5 +340,4 @@ var Tree = /** @class */ (function () {
 /// <reference path="./snow-storm.ts" />
 /// <reference path="./light-string.ts" />
 /// <reference path="./tree.ts" />
-var tree = new Tree();
 //# sourceMappingURL=christmas.js.map
