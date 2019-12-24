@@ -208,7 +208,7 @@ var LightString = /** @class */ (function () {
         this.posTop = 0;
         this.posLeft = 0;
         this.posBottom = 0;
-        this.colors = ['green', 'red', 'blue'];
+        this.colors = ['green', 'red', 'blue', 'orange'];
         this._drawCount = 0;
         this._canvas = document.createElement("canvas");
         document.body.appendChild(this._canvas);
@@ -229,7 +229,7 @@ var LightString = /** @class */ (function () {
                 y: location == LightLocation.Bottom || location == LightLocation.Top ? this._canvas.height :
                     lightPosOffset
             };
-            this.lights.push(new Light(this._canvas.getContext('2d'), lightPoint, this.colors[this.lights.length % 3], location));
+            this.lights.push(new Light(this._canvas.getContext('2d'), lightPoint, this.colors[this.lights.length % 4], location));
             lightPosOffset += this.distanceBetweenLights;
         }
         window.setInterval(function () {
@@ -242,7 +242,7 @@ var LightString = /** @class */ (function () {
         var _this = this;
         this._canvas.getContext('2d').clearRect(0, 0, this._canvas.width, this._canvas.height);
         this.lights.forEach(function (l, index) {
-            l.drawStyle = (_this._drawCount + index) % 2 == 0 ? LightDrawStyle.Stroke : LightDrawStyle.Fill;
+            l.drawStyle = index % 3 == 0 && _this._drawCount % 2 == 0 ? LightDrawStyle.Stroke : LightDrawStyle.Fill;
             l.drawLight();
         });
         ++this._drawCount;

@@ -7,7 +7,7 @@ class LightString {
   posLeft: number = 0;
   posBottom: number = 0;
   posRight: number;
-  colors: string[] = ['green', 'red', 'blue'];
+  colors: string[] = ['green', 'red', 'blue', 'orange'];
   private _drawCount: number = 0;
   private _canvas: HTMLCanvasElement;
 
@@ -36,7 +36,7 @@ class LightString {
       this.lights.push(new Light(
         this._canvas.getContext('2d'),
         lightPoint,
-        this.colors[this.lights.length % 3],
+        this.colors[this.lights.length % 4],
         location
       ));
       lightPosOffset += this.distanceBetweenLights;
@@ -51,7 +51,7 @@ class LightString {
   drawLights() {
     this._canvas.getContext('2d').clearRect(0, 0, this._canvas.width, this._canvas.height);
     this.lights.forEach((l, index) => {
-      l.drawStyle = (this._drawCount + index) % 2 == 0 ? LightDrawStyle.Stroke : LightDrawStyle.Fill;
+      l.drawStyle = index % 3 == 0 && this._drawCount % 2 == 0 ? LightDrawStyle.Stroke : LightDrawStyle.Fill;
       l.drawLight();
     });
     ++this._drawCount;
